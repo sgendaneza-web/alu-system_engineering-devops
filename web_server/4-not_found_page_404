@@ -1,37 +1,12 @@
 #!/usr/bin/env bash
-# Creating a server with a redirect
+#Create 404 not found page
+apt-get update -y
+apt-get install -y nginx
+echo "Holberton School" > /var/www/html/index.nginx-debian.html
 
-# Updating all packages
-sudo apt-get update -y && sudo apt-get upgrade -y
+sed -i '/listen 80 default_server/a \\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}' /etc/nginx/sites-available/default
 
-# Install Nginx
-sudo apt-get install nginx -y
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+sed -i '/listen 80 default_server/a \\terror_page 404 /404.html;' /etc/nginx/sites-available/default
 
-# Creating an index page
-echo "Holberton School" | sudo tee /var/www/html/index.html
-
-# Creating a 404 page
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
-
-# Write data to nginx.conf
-echo "
-events {
-
-}
-
-http {
-	server {
-		listen 80;
-
-		root /var/www/html;
-
-		error_page 404 /404.html;
-
-		location /redirect_me {
-			return 301 https://google.com;
-		}
-	}
-}" | sudo tee /etc/nginx/nginx.conf
-
-# Reload nginx
-sudo service nginx restart
+service nginx restart
