@@ -11,8 +11,8 @@ frontend http_front
 
 backend http_back
     balance roundrobin
-    server 7165-web-01 44.211.227.115:80 check
-    server 7165-web-02 54.236.77.172:80 check
+    server web-01 44.211.227.115:80 check
+    server web-02 54.236.77.172:80 check
 HAPROXY_EOF
 
 sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
